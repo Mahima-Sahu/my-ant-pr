@@ -28,7 +28,7 @@ pipeline {
           export SPTARGET=jenkins
           export HOSTNAME=jenkins
           ant -p
-          ant war
+          ant build
         """
       }
     }
