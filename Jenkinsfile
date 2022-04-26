@@ -8,7 +8,7 @@ pipeline {
       steps {
         echo "checking out....."
         // git 'https://github.com/piona/ant-sample.git'
-        git branch: '*', credentialsId: 'mahima-repo', url: 'https://github.com/Mahima-Sahu/my-ant-pr.git'
+        git credentialsId: 'mahima-repo', url: 'https://github.com/Mahima-Sahu/my-ant-pr.git'
       }
     }    
     // stage('Build dependencies') {
