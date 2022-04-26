@@ -1,4 +1,4 @@
-<project name="ant-sample" basedir="." default="build">
+<project name="ant-sample" basedir="." default="build">   
 
     <!-- properties -->
     <property name="src.dir"     value="src"/>
@@ -39,5 +39,4 @@
     </target>
 
     <target name="rebuild" depends="clean,build" description="rebuild application"/>
-
 </project>
