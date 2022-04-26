@@ -10,5 +10,3 @@ Run the following command in the project directory:
 * `ant doc` to generate documentation,
 * `ant clean` to clean up project folder.
 
-my changes for PR
-
