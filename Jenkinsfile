@@ -1,7 +1,8 @@
 pipeline {
   agent any
 //   triggers {
-//     pullRequestReview(reviewStates: ['approved'])
+//     cron('* * * * *')
+// //     pullRequestReview(reviewStates: ['approved'])
 //   }  
   stages {
     stage('git-checkout') {
@@ -32,17 +33,17 @@ pipeline {
         """
       }
     }
-    stage('Deploy application') {
-      when {
-        branch 'master'
-      }      
-      steps {
-        echo "deploying app in tomcat server....."
-        sshagent(['deploy_user']) {
-          sh 'scp -v -o StrictHostKeyChecking=no build/deploy/identityiq.war ec2-user@15.236.239.176:/opt/tomcat/webapps'
-        }        
-      }
-    }
+//     stage('Deploy application') {
+//       when {
+//         expression{ return "${currentBuild.result}" != "SUCCESS" }
+//       }      
+//       steps {
+//         echo "deploying app in tomcat server....."
+//         sshagent(['deploy_user']) {
+//           sh 'scp -v -o StrictHostKeyChecking=no build/deploy/identityiq.war ec2-user@15.236.239.176:/opt/tomcat/webapps'
+//         }        
+//       }
+//     }
 
     // stage('Sending Slack message ... ') {
     //   steps {
@@ -75,9 +76,15 @@ pipeline {
   post {
     success {
         slackSend color: "#3DFF33", channel: "#cicd-deployment", message: "${currentBuild.result} | Job: ${env.JOB_NAME} with build no.: ${env.BUILD_NUMBER}  is ${currentBuild.result} the results of this build can be found at ${env.BUILD_URL}"
+        script {
+            def previousResult = currentBuild.previousBuild?.result
+            if (previousResult && previousResult != currentBuild.result) {
+                slackSend color: "#3DFF33", channel: "#cicd-deployment", message: "RESOLVED | Job: ${env.JOB_NAME} with build no.: #${env.BUILD_NUMBER}  is ${currentBuild.result} the results of this build can be found at ${env.BUILD_URL}"
+            }            
+        }
     }
     failure {
         slackSend color: "#FF5733", channel: "#cicd-deployment", message: "${currentBuild.result} | Job: ${env.JOB_NAME} with build no.: ${env.BUILD_NUMBER}  is ${currentBuild.result} the results of this build can be found at ${env.BUILD_URL}"
     } 
-  }     
+  }      
 }

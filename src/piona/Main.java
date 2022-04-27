@@ -1,5 +1,4 @@
 package piona;
-
 /**
  * Main class.
  */
