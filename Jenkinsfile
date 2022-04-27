@@ -33,20 +33,17 @@ pipeline {
         """
       }
     }
-    stage('Deploy application') {
-      when {
-        allOf {
-          expression{"${currentBuild.result}" == "SUCCESS"}
-          branch 'master'
-        }
-      }      
-      steps {
-        echo "deploying app in tomcat server....."
-        sshagent(['deploy_user']) {
-          sh 'scp -v -o StrictHostKeyChecking=no build/deploy/identityiq.war ec2-user@15.236.239.176:/opt/tomcat/webapps'
-        }        
-      }
-    }
+//     stage('Deploy application') {
+//       when {
+//         expression{ return "${currentBuild.result}" != "SUCCESS" }
+//       }      
+//       steps {
+//         echo "deploying app in tomcat server....."
+//         sshagent(['deploy_user']) {
+//           sh 'scp -v -o StrictHostKeyChecking=no build/deploy/identityiq.war ec2-user@15.236.239.176:/opt/tomcat/webapps'
+//         }        
+//       }
+//     }
 
     // stage('Sending Slack message ... ') {
     //   steps {
